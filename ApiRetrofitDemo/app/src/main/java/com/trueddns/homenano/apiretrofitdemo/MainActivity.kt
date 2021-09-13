@@ -9,7 +9,11 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.trueddns.homenano.apiretrofitdemo.model.Post
 import com.trueddns.homenano.apiretrofitdemo.repository.Repository
+
+//https://www.youtube.com/watch?v=sBCE_hOFnQU&list=PLSrm9z4zp4mF1Ssdfuocy2XH5Bw4wLLNw&index=1
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +62,51 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
+        // @POST
+//        var myPost = Post(2,2, "Stevdza-San", "Android Developer")
+//        viewModel.pushPost(myPost)
+//        viewModel.myResponse.observe(this, Observer { response ->
+//            if (response.isSuccessful) {
+//                Log.d("Main", response.body().toString())
+//                Log.d("Main", response.code().toString())
+//                Log.d("Main", response.message())
+//            }else {
+//                Log.e("Error", response.errorBody().toString())
+//                Log.e("Error", response.code().toString())
+//                textView.text = response.code().toString()
+//            }
+//        })
+
+        // @POST2
+//        viewModel.pushPost2(2, 2, "Stevdza", "Android")
+//        viewModel.myResponse.observe(this, Observer { response ->
+//            if (response.isSuccessful) {
+//                Log.d("Main", response.body().toString())
+//                Log.d("Main", response.code().toString())
+//                Log.d("Main", response.message())
+//            }else {
+//                Log.e("Error", response.errorBody().toString())
+//                Log.e("Error", response.code().toString())
+//                textView.text = response.code().toString()
+//            }
+//        })
+
+        // @Get Header
+        viewModel.getPost("1111222")
+        viewModel.myResponse.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                Log.d("Main", response.body().toString())
+                Log.d("Main", response.code().toString())
+                Log.d("Main", response.headers().toString() )
+            }else {
+                Log.e("Error", response.errorBody().toString())
+                Log.e("Error", response.code().toString())
+                textView.text = response.code().toString()
+            }
+        })
+
+
+
         // @GET("posts/{postNumber}")
 //        button.setOnClickListener {
 //            val myNumber: String = editTextNumber.text.toString()
@@ -92,34 +141,36 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         // Options
-        val options: HashMap<String, String> = HashMap()
-        options["_sort"] = "id"
-        options["_order"] = "desc"
-
-        button.setOnClickListener {
-            val myNumber: String = editTextNumber.text.toString()
-            viewModel.getCustomPosts2(Integer.parseInt(myNumber), options )
-            viewModel.myCustomPosts2.observe(this, Observer { response ->
-                if (response.isSuccessful) {
-                    textView.text = response.body().toString()
-                    response.body()?.forEach {
-                        Log.d("Response", it.userId.toString())
-                        Log.d("Response", it.id.toString())
-                        Log.d("Response", it.title)
-                        Log.d("Response", it.body)
-                        Log.d("Response", "------------------")
-                    }
-                }else {
-                    textView.text = response.body().toString()
-                }
-            })
-        }
+//        val options: HashMap<String, String> = HashMap()
+//        options["_sort"] = "id"
+//        options["_order"] = "desc"
+//
+//        button.setOnClickListener {
+//            val myNumber: String = editTextNumber.text.toString()
+//            viewModel.getCustomPosts2(Integer.parseInt(myNumber), options )
+//            viewModel.myCustomPosts2.observe(this, Observer { response ->
+//                if (response.isSuccessful) {
+//                    textView.text = response.body().toString()
+//                    response.body()?.forEach {
+//                        Log.d("Response", it.userId.toString())
+//                        Log.d("Response", it.id.toString())
+//                        Log.d("Response", it.title)
+//                        Log.d("Response", it.body)
+//                        Log.d("Response", "------------------")
+//                    }
+//                }else {
+//                    textView.text = response.body().toString()
+//                }
+//            })
+//        }
 
         // NextButton
         nextButton.setOnClickListener {
             val intent = Intent(this, RecycleViewActivity::class.java)
             startActivity(intent)
         }
+
+
 
     }
 }

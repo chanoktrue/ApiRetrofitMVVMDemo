@@ -2,15 +2,18 @@ package com.trueddns.homenano.apiretrofitdemo.api
 
 import com.trueddns.homenano.apiretrofitdemo.model.Post
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface SimpleApi {
 
+//    @Headers(
+//        "Authorization:  12345678",
+//        "Platform: Android"
+//    )
     @GET("posts/1")
-    suspend fun getPost(): Response<Post>
+    suspend fun getPost(
+        @Header("Auth") auth: String
+    ): Response<Post>
 
     @GET("posts/{postNumber}")
     suspend fun getPost2(
@@ -29,4 +32,19 @@ interface SimpleApi {
         @Query("userId") userId: Int,
         @QueryMap options: Map<String, String>
     ): Response<List<Post>>
+
+    @POST("posts")
+    suspend fun pushPost(
+        @Body post: Post
+    ): Response<Post>
+
+    @FormUrlEncoded
+    @POST("posts")
+    suspend fun pushPost2(
+        @Field("userId") userId: Int,
+        @Field("id") id: Int,
+        @Field("title") title: String,
+        @Field("body") body: String
+    ): Response<Post>
+
 }
